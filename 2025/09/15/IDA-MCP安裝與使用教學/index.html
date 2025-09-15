@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="utf-8">
+  <title>IDA MCP安裝與使用教學 | Dinlon's Blog</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="blog, hexo, dinlon5566, dinlon, dinlon5566.com, dinlon5566.github.io">
+  <meta name="theme-color" content="#10b981">
+  
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WNK44GSR');</script>
+<!-- End Google Tag Manager -->
+
+  <link rel="canonical" href="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/">
+
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+
+  
+  <meta name="description" content="在 VS Code 上使用 Roo Code 與 IDA Pro 使用 IDA MCP 進行惡意程式分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDA MCP安裝與使用教學">
+<meta property="og:url" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/index.html">
+<meta property="og:site_name" content="Dinlon&#39;s Blog">
+<meta property="og:description" content="在 VS Code 上使用 Roo Code 與 IDA Pro 使用 IDA MCP 進行惡意程式分析。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image1.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image2.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image3.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image4.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image5.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image6.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image7.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image8.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image9.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image10.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image11.png">
+<meta property="article:published_time" content="2025-09-15T15:10:21.000Z">
+<meta property="article:modified_time" content="2025-09-15T15:18:13.129Z">
+<meta property="article:author" content="Dinlon5566">
+<meta property="article:tag" content="惡意程式分析">
+<meta property="article:tag" content="IDA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.dinlon5566.com/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image.png">
+
+  <style>
+    :root {
+      --sea-color-primary: #10b981;
+    }
+  </style>
+
+  
+<script src="/js/theme_mode.js"></script>
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <header class="sea-header">
+    <nav class="sea-nav-wrap">
+  <h1 class="sea-nav-logo" title="">
+    <a href="/">Dinlon's Blog</a>
+  </h1>
+  <div class="sea-nav-menus">
+    <div id="sea-nav-toggle">
+      <svg t="1716965724278" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10878" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M950.857143 768v73.142857c0 20.004571-16.566857 36.571429-36.571429 36.571429H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571429v-73.142857c0-20.004571 16.566857-36.571429 36.571429-36.571429h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571429z m0-292.571429v73.142858c0 20.004571-16.566857 36.571429-36.571429 36.571428H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571428v-73.142858c0-20.004571 16.566857-36.571429 36.571429-36.571428h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571428z m0-292.571428v73.142857c0 20.004571-16.566857 36.571429-36.571429 36.571429H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571429V182.857143c0-20.004571 16.566857-36.571429 36.571429-36.571429h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571429z" p-id="10879"></path></svg>
+    </div>
+
+    <div id="sea-nav-dimmer"></div>
+<div class="sea-menu-wrap">
+  
+    <a
+      class="sea-menu-link "
+      
+      href="/articles/"
+    >
+      文章
+    </a>
+  
+
+  <span class="sea-menu-sep">|</span>
+
+  
+  
+
+
+  <span class="sea-menu-icon" id="sea-theme-dark">
+    <svg t="1725413107294" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10118" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M557.553778 976.355556c-257.265778 0-466.56-207.160889-466.56-464.426667 0-253.923556 206.577778-464.284444 460.501333-464.284445h0.355556c10.766222 0 20.622222 3.953778 25.443555 13.610667 4.878222 9.756444 3.740444 20.394667-2.915555 29.027556-55.722667 72.220444-85.162667 158.108444-85.162667 249.372444 0 225.891556 183.779556 409.386667 409.671111 409.386667l5.248-0.256c10.325333-0.142222 20.977778 5.859556 25.841778 15.644444a28.302222 28.302222 0 0 1-2.915556 30.051556C837.902222 910.08 703.203556 976.355556 557.553778 976.355556zM495.274667 105.016889C299.192889 135.281778 147.882667 306.161778 147.882667 509.809778c0 225.877333 183.779556 409.656889 409.671111 409.656889 108.686222 0 210.403556-42.055111 286.577778-116.977778-231.566222-27.192889-411.804444-224.625778-411.804445-463.36 0-83.427556 21.617778-163.299556 62.947556-234.112z" fill="" p-id="10119"></path><path d="M578.830222 879.132444c-186.865778 0-345.784889-133.418667-377.841778-317.269333a14.222222 14.222222 0 1 1 28.017778-4.878222c29.681778 170.183111 176.810667 293.703111 349.824 293.703111a14.222222 14.222222 0 1 1 0 28.444444zM209.991111 531.2c-7.537778 0-13.838222-6.997333-14.193778-14.606222-0.312889-6.584889-0.483556-13.795556-0.483555-20.465778 0-7.864889 6.357333-14.492444 14.222222-14.492444s14.222222 6.229333 14.222222 14.094222c0 6.229333 0.170667 13.425778 0.455111 19.584 0.369778 7.850667-5.674667 15.886222-13.525333 15.886222h-0.696889z" fill="" p-id="10120"></path><path d="M622.350222 309.930667m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" fill="" p-id="10121"></path><path d="M787.072 188.273778m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" fill="" p-id="10122"></path><path d="M731.960889 415.303111m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" p-id="10123"></path></svg>
+  </span>
+  <span class="sea-menu-icon" id="sea-theme-light">
+    <svg t="1725410359322" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4274" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M512 768c-141.376 0-256-114.624-256-256s114.624-256 256-256 256 114.624 256 256-114.624 256-256 256z m0-85.333333a170.666667 170.666667 0 1 0 0-341.333334 170.666667 170.666667 0 0 0 0 341.333334zM469.333333 85.333333a42.666667 42.666667 0 1 1 85.333334 0v85.333334a42.666667 42.666667 0 1 1-85.333334 0V85.333333z m0 768a42.666667 42.666667 0 1 1 85.333334 0v85.333334a42.666667 42.666667 0 1 1-85.333334 0v-85.333334zM85.333333 554.666667a42.666667 42.666667 0 1 1 0-85.333334h85.333334a42.666667 42.666667 0 1 1 0 85.333334H85.333333z m768 0a42.666667 42.666667 0 1 1 0-85.333334h85.333334a42.666667 42.666667 0 1 1 0 85.333334h-85.333334zM161.834667 222.165333a42.666667 42.666667 0 0 1 60.330666-60.330666l64 64a42.666667 42.666667 0 0 1-60.330666 60.330666l-64-64z m576 576a42.666667 42.666667 0 0 1 60.330666-60.330666l64 64a42.666667 42.666667 0 0 1-60.330666 60.330666l-64-64z m-515.669334 64a42.666667 42.666667 0 0 1-60.330666-60.330666l64-64a42.666667 42.666667 0 0 1 60.330666 60.330666l-64 64z m576-576a42.666667 42.666667 0 0 1-60.330666-60.330666l64-64a42.666667 42.666667 0 0 1 60.330666 60.330666l-64 64z" p-id="4275"></path></svg>
+  </span>
+
+  <span id="sea-menu-close-icon">
+    <svg t="1725435896874" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4408" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M556.8 512l265.6-265.6c12.8-12.8 12.8-32 0-44.8s-32-12.8-44.8 0L512 467.2 246.4 201.6c-12.8-12.8-32-12.8-44.8 0s-12.8 32 0 44.8l265.6 265.6-265.6 265.6c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 12.8 9.6 22.4 9.6s16-3.2 22.4-9.6l265.6-265.6 265.6 265.6c6.4 6.4 16 9.6 22.4 9.6s16-3.2 22.4-9.6c12.8-12.8 12.8-32 0-44.8L556.8 512z" p-id="4409"></path></svg>
+  </span>
+</div>
+  </div>
+</nav>
+  </header>
+  <main id="sea-main-wrapper">
+    <article class="sea-page-card-wrapper">
+  <header class="sea-article-header">
+    <h1 class="sea-article-title">IDA MCP安裝與使用教學</h1>
+    
+      <div class="sea-post-meta sea-post-meta__center">
+        <div class="sea-post-time">
+  <svg t="1716964550804" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2621" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M805.49888 981.49888l-602.3168-0.76288c-86.59456-8.192-154.56768-81.3056-154.56768-170.01472L48.6144 291.73248c0-94.1568 76.60032-170.75712 170.7776-170.75712l586.10176 0c94.1568 0 170.73152 76.60032 170.73152 170.75712L976.22528 810.7008C976.2304 904.87296 899.63008 981.49888 805.49888 981.49888L805.49888 981.49888zM219.3664 190.57152c-55.79776 0-101.20192 45.38368-101.20192 101.18144l0 518.96832c0 55.79776 45.40416 101.20704 101.20192 101.20704l586.13248 0c55.77728 0 101.16096-45.40928 101.16096-101.20704L906.65984 291.73248c0-55.79776-45.38368-101.18656-101.16096-101.18656L219.3664 190.54592 219.3664 190.57152zM698.84416 290.51904c-25.60512 0-46.38208-20.77696-46.38208-46.38208l0-158.6688c0-25.6 20.77696-46.38208 46.38208-46.38208 25.6 0 46.38208 20.78208 46.38208 46.38208L745.22624 244.1216C745.22624 269.7472 724.46976 290.51904 698.84416 290.51904L698.84416 290.51904zM315.65824 290.51904c-25.60512 0-46.38208-20.77696-46.38208-46.38208l0-158.6688c0-25.6 20.77696-46.38208 46.38208-46.38208 25.6 0 46.38208 20.78208 46.38208 46.38208L362.04032 244.1216C362.04032 269.7472 341.28896 290.51904 315.65824 290.51904L315.65824 290.51904zM534.8864 794.78784l-44.27264 0c-25.6 0-46.38208-20.77696-46.38208-46.38208 0-25.6 20.78208-46.38208 46.38208-46.38208l44.27264 0c25.6 0 46.38208 20.78208 46.38208 46.38208C581.26848 774.01088 560.4864 794.78784 534.8864 794.78784L534.8864 794.78784zM930.79552 452.608 121.24672 452.608c-25.60512 0-46.38208-20.78208-46.38208-46.38208 0-25.60512 20.77696-46.38208 46.38208-46.38208l809.5744 0c25.6 0 46.38208 20.77696 46.38208 46.38208C977.2032 431.82592 956.42624 452.608 930.79552 452.608L930.79552 452.608zM327.92576 649.03168l-44.27264 0c-25.6 0-46.38208-20.78208-46.38208-46.38208 0-25.60512 20.78208-46.38208 46.38208-46.38208l44.27264 0c25.6 0 46.38208 20.77696 46.38208 46.38208C374.30784 628.25472 353.52576 649.03168 327.92576 649.03168L327.92576 649.03168zM534.8864 649.03168l-44.27264 0c-25.6 0-46.38208-20.78208-46.38208-46.38208 0-25.60512 20.78208-46.38208 46.38208-46.38208l44.27264 0c25.6 0 46.38208 20.77696 46.38208 46.38208S560.4864 649.03168 534.8864 649.03168L534.8864 649.03168zM741.27872 649.03168l-44.26752 0c-25.60512 0-46.38208-20.78208-46.38208-46.38208 0-25.60512 20.77696-46.38208 46.38208-46.38208l44.26752 0c25.60512 0 46.38208 20.77696 46.38208 46.38208C787.6608 628.25472 766.90944 649.03168 741.27872 649.03168L741.27872 649.03168zM327.92576 794.78784l-44.27264 0c-25.6 0-46.38208-20.77696-46.38208-46.38208 0-25.6 20.78208-46.38208 46.38208-46.38208l44.27264 0c25.6 0 46.38208 20.78208 46.38208 46.38208C374.30784 774.01088 353.52576 794.78784 327.92576 794.78784L327.92576 794.78784zM741.27872 794.78784l-44.26752 0c-25.60512 0-46.38208-20.77696-46.38208-46.38208 0-25.6 20.77696-46.38208 46.38208-46.38208l44.26752 0c25.60512 0 46.38208 20.78208 46.38208 46.38208C787.6608 774.01088 766.90944 794.78784 741.27872 794.78784L741.27872 794.78784z" p-id="2622"></path></svg>
+  <time datetime="2025-09-15T15:10:21.000Z">2025-09-15</time>
+</div>
+        
+        
+  <div class="sea-post-tags">
+    <svg t="1716964811431" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6117" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M384 977.152c-20.5312 0-39.8336-7.9872-54.3232-22.4256l-260.4032-260.4032c-14.4896-14.4896-22.4256-33.7408-22.4256-54.3232s7.9872-39.8336 22.4256-54.3232l439.6032-439.6032c24.9344-24.9344 70.2464-43.7248 105.5232-43.7248h230.4c42.3424 0 76.8 34.4576 76.8 76.8v230.4c0 35.2256-18.7904 80.5888-43.6736 105.5232l-439.6032 439.6032a76.1856 76.1856 0 0 1-54.3232 22.4256zM614.4 153.6c-21.248 0-54.272 13.6704-69.2736 28.7232l-439.6032 439.6032c-4.8128 4.8128-7.424 11.2128-7.424 18.1248s2.6624 13.312 7.424 18.0736l260.4032 260.4032c4.8128 4.8128 11.2128 7.424 18.1248 7.424s13.312-2.6624 18.1248-7.424l439.6032-439.6032c15.0016-15.0016 28.7232-48.0768 28.7232-69.3248V179.2a25.6 25.6 0 0 0-25.6-25.6h-230.4z" p-id="6118"></path><path d="M742.4 358.4c-42.3424 0-76.8-34.4576-76.8-76.8S700.0576 204.8 742.4 204.8s76.8 34.4576 76.8 76.8S784.7424 358.4 742.4 358.4z m0-102.4a25.6 25.6 0 1 0 0 51.2 25.6 25.6 0 0 0 0-51.2z" p-id="6119"></path></svg>
+    <a class="tag-link" href="/tags/IDA/" rel="tag">IDA</a> , <a class="tag-link" href="/tags/%E6%83%A1%E6%84%8F%E7%A8%8B%E5%BC%8F%E5%88%86%E6%9E%90/" rel="tag">惡意程式分析</a>
+  </div>
+
+      </div>
+    
+  </header>
+  <div class="sea-doc">
+    
+      
+      
+        <div class="sea-article-catalog">
+          <h2>Table of contents</h2>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8"><span class="toc-number">1.</span> <span class="toc-text">IDA MCP安裝與使用教學</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%9D-IDA-MCP"><span class="toc-number">3.</span> <span class="toc-text">安裝 IDA MCP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IDA-Python%E7%89%88%E6%9C%AC%E6%9B%B4%E6%94%B9"><span class="toc-number">3.1.</span> <span class="toc-text">IDA Python版本更改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AA%A2%E6%B8%AC%E5%88%B0-IDA-Free"><span class="toc-number">3.2.</span> <span class="toc-text">檢測到 IDA Free ?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%96%8B%E5%A7%8B%E4%BD%BF%E7%94%A8-MCP"><span class="toc-number">4.</span> <span class="toc-text">開始使用 MCP</span></a></li></ol>
+        </div>
+      
+    
+    <div class="sea-article-content">
+      <h1 id="IDA-MCP安裝與使用教學"><a href="#IDA-MCP安裝與使用教學" class="headerlink" title="IDA MCP安裝與使用教學"></a>IDA MCP安裝與使用教學</h1><p>嗨嗨，好久不見了 OwO&#x2F;<br></p>
+<p>這次來介紹IDA MCP安裝與使用技巧 ~</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrexodia/ida-pro-mcp">https://github.com/mrexodia/ida-pro-mcp</a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>自研究所畢業後不到一周，我就開始進行惡意程式分析的工作。我發現身為新手在使用 IDA 時會遇到很多困難，像是超多的未命名函數與各種無法理解的邏輯都會讓我卡上一段時間。到 HITCON 後發現似乎人都開始使用了 IDA MCP 這個酷東西，進而對這個技術有了一點興趣，直到開始使用後發現真香，所以來寫個筆記來記錄我的安裝過程與使用上的方法。</p>
+<h1 id="安裝-IDA-MCP"><a href="#安裝-IDA-MCP" class="headerlink" title="安裝 IDA MCP"></a>安裝 IDA MCP</h1><p>在這一章節，將會講述如何在 VS Code 上使用 Roo Code 與 IDA Pro 使用 IDA MCP。並且會提到一些常見的問題。這些問題可能隨著時間被解決或是出更多問題，不過現在 (2025&#x2F;09&#x2F;15) 我已經把我安裝時踩到的坑解決了，希望之後不會遇到更多坑。</p>
+<p>很可惜，IDA Free 是不能玩 MCP 插件的，且 IDA Pro 版本必須大於 8.3。如果發現你的版本無法使用，請升級 IDA 版本。</p>
+<p>由於我在這次使用 Roo Code 進行 LLM 工具交互，所以先在VS Code上安裝這個插件。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image.png"></p>
+<h2 id="IDA-Python版本更改"><a href="#IDA-Python版本更改" class="headerlink" title="IDA Python版本更改"></a>IDA Python版本更改</h2><p>若你的電腦有安裝不符合的python版本 (&lt;3.11 )，請參考這邊：</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image1.png"></p>
+<p>首先，到 <a target="_blank" rel="noopener" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a>  安裝新版，我這邊安裝的是 python-3.13.7-amd64.exe 。</p>
+<p>安裝完後裝置應會有兩個以上的 Python 版本，請到 IDA 的安裝位置 (C:\Program Files\IDA Professional X.X) 並執行 idapyswitch.exe，選擇你的最新版本即可。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image2.png"></p>
+<p>接下來的python環境就會變成 3.13.7 了</p>
+<hr>
+<p>然後進行安裝</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">py <span class="token parameter variable">-3.13</span> <span class="token parameter variable">-m</span> pip uninstall ida-pro-mcp
+py <span class="token parameter variable">-3.13</span> <span class="token parameter variable">-m</span> pip <span class="token function">install</span> https://github.com/mrexodia/ida-pro-mcp/archive/refs/heads/main.zip
+py <span class="token parameter variable">-3.13</span> <span class="token parameter variable">-m</span> ida_pro_mcp <span class="token parameter variable">--install</span></code></pre>
+
+<h2 id="檢測到-IDA-Free"><a href="#檢測到-IDA-Free" class="headerlink" title="檢測到 IDA Free ?"></a>檢測到 IDA Free ?</h2><p>若你的電腦過去曾安裝過  IDA Free，這將會造成安裝時顯示以下提示且無法繼續安裝：</p>
+<p>“IDA Free does not support plugins and cannot be used. Purchase and install IDA Pro instead.”</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image3.png"></p>
+<p>在上個月時還不會出現這樣的問題，所以我去看了一下儲存庫的更新資訊，還被我找到了：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrexodia/ida-pro-mcp/commit/19499f066b234a9b9767661de1916fdb0990931d">https://github.com/mrexodia/ida-pro-mcp/commit/19499f066b234a9b9767661de1916fdb0990931d</a></p>
+<p>可以看到這次更新導致 <code>%APPDATA%\Hex-Rays\IDA Pro</code> 若有檔案名稱符合 <code>idafree_*.hexlic</code> 將會立即停止安裝。所以只要把這個檔案改個名稱就好了，我這邊在檔案名稱前加了一個減號即可通過安裝。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image4.png"></p>
+<hr>
+<p>安裝完成應該可以看到 IDA plugin 與 Roo Code 安裝完成。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image5.png"></p>
+<hr>
+<h1 id="開始使用-MCP"><a href="#開始使用-MCP" class="headerlink" title="開始使用 MCP"></a>開始使用 MCP</h1><p>接下來在 Roo Code 進行 API 設定，首先你需要一個可以支援MCP功能的 LLM API 服務。我個人喜歡使用 openai 的 <strong>GPT-5 mini</strong> 模型，價格與品質算是合理。配合資料分享政策，每天都有近五美元的免費使用，通常可以完成多個程式的逆向分析。</p>
+<p>在 Roo Code右上角的齒輪進行 API 設定，輸入 API Key 後選擇提供商與模型，最後要記得儲存。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image6.png"></p>
+<p>在 IDA 中開啟你要分析的項目，到程式碼的頁面上開啟 Edit &gt; Plugins &gt; MCP 即可開啟 IDA MCP Server。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image7.png"></p>
+<p>接下來可以根據你分析的過程來編寫 Prompt，個人以官方的建議 Prompt Engineering 進行改編：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">你已經使用 MCP 工具連接至IDA Pro，你的任務是對一個惡意程式樣本進行靜態分析。你可以使用 MCP 工具取得資訊與修改 IDB 狀態。請遵循以下原則與流程，並最終產出一份 report.md。
+【總原則】
+- 絕對不要自行進行數位進位制或位元運算轉換，務必使用 MCP 的 convert_number，必要時再用可決定性的數學/位元工具。
+- 以「可驗證證據」為準則：每一個關鍵結論，都要附上函式名稱、起始位址、關聯字串或常數，以及你在反編譯/反組譯中觀察到的關鍵條件或基本塊。
+- 除非我明確要求，請不要使用任一 dbg_* 類的除錯工具；本任務預設「靜態分析優先」。
+- 以英文進行思考與命名，當與使用者交互、報告註解時可使用繁體中文。
+- 任何對 IDB 的變更（命名、型別、註解）都要有理據，並在報告中可追溯。
+- 不要猜測與暴力破解、Fuzz。所有推論應建立在可觀察輸出、xref、型別與簡單可重現的 Python 腳本之上。
+【分析目標】
+你的目標是分析 NVIDIA.exe 在被呼叫後進入函數sub_140006BF0後的行為，函數中包含多個未命名函數，請分析這些函數的流程並進行命名與編寫註解。並詳細研究是否出現明顯特徵與需要分析的地方。</code></pre>
+
+<p>可以添加其他的功能以增加體驗，這是我預設開啟的幾個項目。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image8.png"></p>
+<p>部分函數需有手動確認，這時候需要先確認行為才能進行下一步。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image9.png"></p>
+<p>當詢問下一步動作時，可以參考提示直接選擇下一步動作；或是可以根據分析時的發現寫入自訂命令。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image10.png"></p>
+<p>最後經過多次分析，你會得到一份有命名函數的 ida 分析結果與 report.md，請記得將這些資訊儲存起來以方便繼續分析。</p>
+<p><img src="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/image11.png"></p>
+<p>這次的分享就到這邊，下次來寫關於惡意程式開發的一些小記好了。</p>
+
+    </div>
+  </div>
+
+  
+    
+  <div class="sea-prev-next-wrapper">
+    
+    
+      <div class="next">
+        <a class="link" href="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/">
+          那些常見與不常見的DLL注入技術
+        </a>
+        <span>></span>
+      </div>
+    
+  </div>
+
+  
+</article>
+
+
+  </main>
+  <footer id="sea-footer-container">
+  <div class="sea-footer-row">
+    <div class="sea-footer-menu-link">
+      
+        <a
+          class="sea-footer-link"
+          
+            target="_blank"
+          
+          href="https://dinlon5566.com/"
+        >
+          Website
+        </a>
+        <span class="sea-footer-link__dot">·</span>
+      
+        <a
+          class="sea-footer-link"
+          
+            target="_blank"
+          
+          href="https://github.com/dinlon5566"
+        >
+          Github
+        </a>
+        <span class="sea-footer-link__dot">·</span>
+      
+    </div>
+  </div>
+  
+  
+  <div class="sea-footer-row">
+    <div class="sea-footer-copyright">
+      <span>©</span>
+      
+        2025
+      
+      <span>·</span>
+      Dinlon5566
+    </div>
+    <span class="split-line">|</span>
+    <div class="sea-footer-theme-by">
+      Theme by <a class="theme" href="https://github.com/hai-zou/hexo-theme-sea" target="_blank">Sea</a>
+    </div>
+  </div>
+</footer>
+
+  
+<script src="/js/main.js"></script>
+
+
+<script src="/js/theme.js"></script>
+
+</body>
+</html>
