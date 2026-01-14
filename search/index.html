@@ -8,14 +8,14 @@
   <meta name="keywords" content="blog, hexo, dinlon5566, dinlon, dinlon5566.com, dinlon5566.github.io">
   <meta name="theme-color" content="#10b981">
 
-  <link rel="canonical" href="https://blog.dinlon5566.com/categories/index.html">
+  <link rel="canonical" href="https://blog.dinlon5566.com/search/index.html">
 
   
 
   <meta name="description" content="放一些有趣的東西">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Dinlon&#39;s Blog">
-<meta property="og:url" content="https://blog.dinlon5566.com/categories/index.html">
+<meta property="og:url" content="https://blog.dinlon5566.com/search/index.html">
 <meta property="og:site_name" content="Dinlon&#39;s Blog">
 <meta property="og:description" content="放一些有趣的東西">
 <meta property="og:locale" content="zh_TW">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary">
   <meta name="generator" content="Hexo 7.3.0">
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","url":"https://blog.dinlon5566.com/categories/index.html"}
+{"@context":"https://schema.org","@type":"WebPage","url":"https://blog.dinlon5566.com/search/index.html"}
 </script>
 
   
@@ -93,28 +93,52 @@
 </nav>
   </header>
   <main id="sea-main-wrapper" data-pagefind-body>
-    
-
-
-  <div class="sea-page-card-wrapper">
+    <div class="sea-page-card-wrapper">
   <h1 class="sea-page-card-title">
-    Categories
+    Search
   </h1>
-
-  <div class="sea-page-categories">
-    
-      <a
-        class="sea-page-categories__item"
-        href="/categories/Medium/"
-      >
-        <svg t="1716964680422" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4550" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M810.666667 85.333333a85.333333 85.333333 0 0 1 85.333333 85.333334v152.021333c36.821333 9.493333 64 42.88 64 82.645333v405.333334a128 128 0 0 1-128 128H192a128 128 0 0 1-128-128V298.666667a85.376 85.376 0 0 1 64-82.645334V170.666667a85.333333 85.333333 0 0 1 85.333333-85.333334h597.333334zM128.149333 296.170667L128 298.666667v512a64 64 0 0 0 60.245333 63.893333L192 874.666667h640a64 64 0 0 0 63.893333-60.245334L896 810.666667V405.333333a21.333333 21.333333 0 0 0-18.837333-21.184L874.666667 384H638.165333l-122.069333-101.717333a21.333333 21.333333 0 0 0-10.688-4.736l-2.986667-0.213334H149.333333a21.333333 21.333333 0 0 0-21.184 18.837334zM535.189333 213.333333l127.978667 106.666667H832V170.666667a21.333333 21.333333 0 0 0-18.837333-21.184L810.666667 149.333333H213.333333a21.333333 21.333333 0 0 0-21.184 18.837334L192 170.666667v42.666666h343.168z" p-id="4551"></path></svg>
-        <span class="name">Medium</span>
-        <span class="num">2</span>
-      </a>
-    
-  </div>
+  
+  <div id="pagefind-search"></div>
 </div>
 
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<link href="/css/plugins/localsearch.css" rel="stylesheet">
+
+<script src="/pagefind/pagefind-ui.js" defer></script>
+<script defer>
+  window.addEventListener('DOMContentLoaded', () => {
+    const pagefindSearch = document.querySelector("#pagefind-search");
+    if (!pagefindSearch) return;
+    const params = new URLSearchParams(window.location.search);
+    const search = new PagefindUI({
+      element: "#pagefind-search",
+      showSubResults: true,
+      showImages: false,
+      showEmptyFilters: false,
+      resetStyles: false,
+      processTerm: function (term) {
+        params.set("q", term);
+        history.replaceState(history.state, "", "?" + params.toString());
+        return term;
+      },
+    });
+    const query = params.get("q");
+    if (query) {
+      search.triggerSearch(query);
+    }
+    // Reset search param if search input is cleared
+    const searchInput = document.querySelector(".pagefind-ui__search-input");
+    const clearButton = document.querySelector(".pagefind-ui__search-clear");
+    searchInput?.addEventListener("input", resetSearchParam);
+    clearButton?.addEventListener("click", resetSearchParam);
+
+    function resetSearchParam(e) {
+      if (e.target?.value.trim() === "") {
+        history.replaceState(history.state, "", window.location.pathname);
+      }
+    }
+  });
+</script>
   </main>
   <footer id="sea-footer-container">
   <div class="sea-footer-row">

@@ -7,25 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="keywords" content="blog, hexo, dinlon5566, dinlon, dinlon5566.com, dinlon5566.github.io">
   <meta name="theme-color" content="#10b981">
-  
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WNK44GSR');</script>
-<!-- End Google Tag Manager -->
 
   <link rel="canonical" href="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/">
 
-  <link rel="shortcut icon" href="/assets/favicon.ico">
-
   
-  
-<link rel="stylesheet" href="/css/main.css">
 
-
-  
   <meta name="description" content="這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情">
 <meta property="og:type" content="article">
 <meta property="og:title" content="那些常見與不常見的DLL注入技術">
@@ -50,6 +36,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="article:tag" content="簡易">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png">
+  <meta name="generator" content="Hexo 7.3.0">
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/"},"headline":"那些常見與不常見的DLL注入技術","description":"這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情","datePublished":"2025-06-14T20:03:00.000Z","dateModified":"2025-06-14T21:45:28.245Z","author":{"@type":"Person","name":"Dinlon5566"},"publisher":{"@type":"Organization","name":"Dinlon's Blog","logo":{"@type":"ImageObject","url":"https://blog.dinlon5566.com/favicon.ico"}}}
+</script>
+
+  
+  
+<link rel="stylesheet" href="/css/main.css">
 
   <style>
     :root {
@@ -60,13 +54,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   
 <script src="/js/theme_mode.js"></script>
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+</head>
 <body>
   <header class="sea-header">
     <nav class="sea-nav-wrap">
-  <h1 class="sea-nav-logo" title="">
+  <div class="sea-nav-logo" title="">
     <a href="/">Dinlon's Blog</a>
-  </h1>
+  </div>
   <div class="sea-nav-menus">
     <div id="sea-nav-toggle">
       <svg t="1716965724278" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10878" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M950.857143 768v73.142857c0 20.004571-16.566857 36.571429-36.571429 36.571429H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571429v-73.142857c0-20.004571 16.566857-36.571429 36.571429-36.571429h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571429z m0-292.571429v73.142858c0 20.004571-16.566857 36.571429-36.571429 36.571428H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571428v-73.142858c0-20.004571 16.566857-36.571429 36.571429-36.571428h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571428z m0-292.571428v73.142857c0 20.004571-16.566857 36.571429-36.571429 36.571429H109.714286c-20.004571 0-36.571429-16.566857-36.571429-36.571429V182.857143c0-20.004571 16.566857-36.571429 36.571429-36.571429h804.571428c20.004571 0 36.571429 16.566857 36.571429 36.571429z" p-id="10879"></path></svg>
@@ -89,6 +83,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   
   
 
+  
+    <a href="/search" title="Search">
+  <span class="sea-menu-icon" id="sea-search-icon">
+    <svg t="1725410662861" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5552" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M400.085333 151.210667c-89.059556 0-172.672 47.616-218.197333 124.273777a14.222222 14.222222 0 1 0 24.462222 14.535112c40.433778-68.067556 114.659556-110.364444 193.735111-110.364445a14.222222 14.222222 0 1 0 0-28.444444zM170.197333 336.298667a14.236444 14.236444 0 0 0-17.080889 10.609777c-4.252444 18.147556-6.656 29.397333-6.656 49.592889a14.222222 14.222222 0 1 0 28.444445 0c0-17.137778 1.92-26.083556 5.902222-43.121777a14.222222 14.222222 0 0 0-10.609778-17.080889z" fill="" p-id="5553"></path><path d="M947.384889 821.944889L717.809778 592.384a70.584889 70.584889 0 0 0-16.64-12.472889 346.254222 346.254222 0 0 0 47.36-175.089778c0-192.142222-156.302222-348.444444-348.444445-348.444444-192.128 0-348.444444 156.302222-348.444444 348.444444s156.316444 348.430222 348.444444 348.430223c68.408889 0 132.209778-19.882667 186.083556-54.058667 2.915556 4.821333 6.570667 9.472 10.951111 13.852444l229.575111 229.589334a84.849778 84.849778 0 0 0 60.359111 24.974222 84.821333 84.821333 0 0 0 60.344889-24.974222 84.778667 84.778667 0 0 0 24.974222-60.330667 84.920889 84.920889 0 0 0-24.988444-60.359111zM108.529778 404.835556c0-160.768 130.787556-291.555556 291.555555-291.555556 160.782222 0 291.555556 130.787556 291.555556 291.555556 0 160.782222-130.801778 291.541333-291.555556 291.541333-160.768 0-291.555556-130.759111-291.555555-291.541333z m798.620444 497.578666c-10.766222 10.723556-29.496889 10.723556-40.248889 0L637.340444 672.839111c-1.991111-1.976889-2.730667-3.299556-2.830222-3.299555 0.042667-0.611556 0.824889-6.471111 17.080889-22.698667 16.213333-16.256 22.072889-16.995556 22.257778-17.109333 0.369778 0.113778 1.692444 0.853333 3.740444 2.887111l229.546667 229.560889c5.390222 5.390222 8.334222 12.529778 8.334222 20.138666a28.401778 28.401778 0 0 1-8.32 20.096z" p-id="5554"></path></svg>
+  </span>
+</a>
+  
+
 
   <span class="sea-menu-icon" id="sea-theme-dark">
     <svg t="1725413107294" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10118" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M557.553778 976.355556c-257.265778 0-466.56-207.160889-466.56-464.426667 0-253.923556 206.577778-464.284444 460.501333-464.284445h0.355556c10.766222 0 20.622222 3.953778 25.443555 13.610667 4.878222 9.756444 3.740444 20.394667-2.915555 29.027556-55.722667 72.220444-85.162667 158.108444-85.162667 249.372444 0 225.891556 183.779556 409.386667 409.671111 409.386667l5.248-0.256c10.325333-0.142222 20.977778 5.859556 25.841778 15.644444a28.302222 28.302222 0 0 1-2.915556 30.051556C837.902222 910.08 703.203556 976.355556 557.553778 976.355556zM495.274667 105.016889C299.192889 135.281778 147.882667 306.161778 147.882667 509.809778c0 225.877333 183.779556 409.656889 409.671111 409.656889 108.686222 0 210.403556-42.055111 286.577778-116.977778-231.566222-27.192889-411.804444-224.625778-411.804445-463.36 0-83.427556 21.617778-163.299556 62.947556-234.112z" fill="" p-id="10119"></path><path d="M578.830222 879.132444c-186.865778 0-345.784889-133.418667-377.841778-317.269333a14.222222 14.222222 0 1 1 28.017778-4.878222c29.681778 170.183111 176.810667 293.703111 349.824 293.703111a14.222222 14.222222 0 1 1 0 28.444444zM209.991111 531.2c-7.537778 0-13.838222-6.997333-14.193778-14.606222-0.312889-6.584889-0.483556-13.795556-0.483555-20.465778 0-7.864889 6.357333-14.492444 14.222222-14.492444s14.222222 6.229333 14.222222 14.094222c0 6.229333 0.170667 13.425778 0.455111 19.584 0.369778 7.850667-5.674667 15.886222-13.525333 15.886222h-0.696889z" fill="" p-id="10120"></path><path d="M622.350222 309.930667m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" fill="" p-id="10121"></path><path d="M787.072 188.273778m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" fill="" p-id="10122"></path><path d="M731.960889 415.303111m-25.344 0a25.344 25.344 0 1 0 50.688 0 25.344 25.344 0 1 0-50.688 0Z" p-id="10123"></path></svg>
@@ -104,7 +106,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </nav>
   </header>
-  <main id="sea-main-wrapper">
+  <main id="sea-main-wrapper" data-pagefind-body>
     <article class="sea-page-card-wrapper">
   <header class="sea-article-header">
     <h1 class="sea-article-title">那些常見與不常見的DLL注入技術</h1>
@@ -125,14 +127,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     
   </header>
   <div class="sea-doc">
-    
-      
-      
-        <div class="sea-article-catalog">
-          <h2>Table of contents</h2>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DLL-%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93%E7%B0%A1%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">DLL 注入技術簡介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9A%E9%BA%BC%E6%98%AF-DLL-%E6%B3%A8%E5%85%A5"><span class="toc-number">2.1.</span> <span class="toc-text">甚麼是 DLL 注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DLL-%E9%96%8B%E7%99%BC"><span class="toc-number">2.2.</span> <span class="toc-text">DLL 開發</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DLL-%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93%E6%91%98%E8%A6%81"><span class="toc-number">3.</span> <span class="toc-text">DLL 注入技術摘要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LoadLibrary"><span class="toc-number">3.0.1.</span> <span class="toc-text">LoadLibrary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QueueUserAPC"><span class="toc-number">3.0.2.</span> <span class="toc-text">QueueUserAPC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reflective-DLL-Injection"><span class="toc-number">3.0.3.</span> <span class="toc-text">Reflective DLL Injection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SetWindowsHookEx"><span class="toc-number">3.0.4.</span> <span class="toc-text">SetWindowsHookEx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AppInit-DLLs"><span class="toc-number">3.0.5.</span> <span class="toc-text">AppInit_DLLs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AppCertDLLs"><span class="toc-number">3.0.6.</span> <span class="toc-text">AppCertDLLs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DLL-Hollowing"><span class="toc-number">3.0.7.</span> <span class="toc-text">DLL Hollowing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread-Context"><span class="toc-number">3.0.8.</span> <span class="toc-text">Thread Context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Manual-Mapping"><span class="toc-number">3.0.9.</span> <span class="toc-text">Manual Mapping</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93%E5%AF%A6%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">注入技術實作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LoadLibrary-%E5%AF%A6%E4%BD%9C"><span class="toc-number">4.1.</span> <span class="toc-text">LoadLibrary 實作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%AA%AA%E6%98%8E"><span class="toc-number">4.1.1.</span> <span class="toc-text">方法說明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DEMO"><span class="toc-number">4.1.2.</span> <span class="toc-text">DEMO</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DLL%E6%B3%A8%E5%85%A5%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="toc-number">4.2.</span> <span class="toc-text">DLL注入注意事項</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DllMain%E5%87%BD%E6%95%B8%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">4.2.1.</span> <span class="toc-text">DllMain函數的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32%E8%88%8764%E4%BD%8D%E5%85%83%E5%85%BC%E5%AE%B9%E6%80%A7%E5%95%8F%E9%A1%8C"><span class="toc-number">4.2.2.</span> <span class="toc-text">32與64位元兼容性問題</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%8A%E9%99%90%E8%88%87%E8%A8%98%E6%86%B6%E9%AB%94%E7%AE%A1%E7%90%86"><span class="toc-number">4.2.3.</span> <span class="toc-text">權限與記憶體管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E5%85%83%E7%B7%A8%E7%A2%BC%E8%88%87API%E9%81%B8%E6%93%87"><span class="toc-number">4.2.4.</span> <span class="toc-text">字元編碼與API選擇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%84%AA%E7%9A%84%E5%84%AA%E5%8C%96"><span class="toc-number">4.2.5.</span> <span class="toc-text">不優的優化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BE%8C%E8%A8%98"><span class="toc-number">5.</span> <span class="toc-text">後記</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">參考資料</span></a></li></ol>
-        </div>
-      
     
     <div class="sea-article-content">
       <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我把論文寫完了 \OwO&#x2F;</p>
@@ -676,7 +670,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
   <div class="sea-prev-next-wrapper">
     
       <div class="prev">
-        <span><</span>
+        <svg t="1725418977480" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4239" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="4240"></path></svg>
         <a class="link" href="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/">
           IDA MCP安裝與使用教學
         </a>
@@ -687,7 +681,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
         <a class="link" href="/2025/06/05/%E6%88%91%E6%9C%89%E9%83%A8%E8%90%BD%E6%A0%BC%E4%BA%86OwO/">
           我有部落格了OwO
         </a>
-        <span>></span>
+        <svg t="1725418993065" class="sea-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6832" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M731.733333 480l-384-341.333333c-17.066667-14.933333-44.8-14.933333-59.733333 4.266666-14.933333 17.066667-14.933333 44.8 4.266667 59.733334L640 512 292.266667 821.333333c-17.066667 14.933333-19.2 42.666667-4.266667 59.733334 8.533333 8.533333 19.2 14.933333 32 14.933333 10.666667 0 19.2-4.266667 27.733333-10.666667l384-341.333333c8.533333-8.533333 14.933333-19.2 14.933334-32s-4.266667-23.466667-14.933334-32z" p-id="6833"></path></svg>
       </div>
     
   </div>
@@ -696,6 +690,19 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 </article>
 
 
+
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleIcon = document.querySelector('.sea-article-catalog-title .sea-svg-icon');
+    const tocContent = document.querySelector('.sea-article-catalog > .toc');
+    if (toggleIcon && tocContent) {
+      toggleIcon.addEventListener('click', function () {
+        tocContent.classList.toggle('sea-article-catalog-show');
+        toggleIcon.classList.toggle('sea-svg-icon-rotate');
+      });
+    }
+  });
+</script>
   </main>
   <footer id="sea-footer-container">
   <div class="sea-footer-row">
@@ -723,6 +730,17 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
         </a>
         <span class="sea-footer-link__dot">·</span>
       
+        <a
+          class="sea-footer-link"
+          
+            target="_blank"
+          
+          href="https://medium.com/@dinlon5566"
+        >
+          Medium
+        </a>
+        <span class="sea-footer-link__dot">·</span>
+      
     </div>
   </div>
   
@@ -731,7 +749,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
     <div class="sea-footer-copyright">
       <span>©</span>
       
-        2025
+        2026
       
       <span>·</span>
       Dinlon5566
@@ -744,10 +762,10 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 </footer>
 
   
-<script src="/js/main.js"></script>
+<script src="/js/main.js" defer></script>
 
 
-<script src="/js/theme.js"></script>
+<script src="/js/theme.js" defer></script>
 
 </body>
 </html>

@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title>Silver Fox APT：遞送鏈的集中化特徵</title>
+      <link href="/2026/01/14/Silver-Fox-APT%EF%BC%9A%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E9%9B%86%E4%B8%AD%E5%8C%96%E7%89%B9%E5%BE%B5/"/>
+      <url>/2026/01/14/Silver-Fox-APT%EF%BC%9A%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E9%9B%86%E4%B8%AD%E5%8C%96%E7%89%B9%E5%BE%B5/</url>
+      
+        <content type="html"><![CDATA[<p>在針對 Silver Fox APT 相關資產進行情資收集時，我們觀測到一系列具有一致行為模式的前端下載誘導框架。此類站點多以熱門關鍵字進行 SEO 佔位，吸引使用者透過搜尋引擎進入偽裝下載頁。當使用者點擊下載後，站點會載入外部 JavaScript 資源並觸發導流流程，過程中向指定 API 站點請求動態短連結並投放最終載荷。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結: <a href="https://medium.com/ois/silver-fox-apt-%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E4%B8%AD%E6%A8%9E%E5%8C%96%E7%89%B9%E5%BE%B5%E7%A0%94%E7%A9%B6-8a713ad90fd6?utm_source=dinlon5566.com">Medium</a></p><hr><p>其實在寫這一篇文章時挺開心的，因為這陣子做 Silver Fox 的情資與惡意程式分析時，常常拆到一半發現這個樣本的家族已經被其他資安團隊寫過了，甚至有時候才差了幾天 QAQ</p><p>所以發現這次的研究重點與相關情資還沒有在其他地方出現，就趕快把這一篇文章寫出來，希望您看的開心 OwO&#x2F;</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Medium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 威脅情資 </tag>
+            
+            <tag> SilverFox </tag>
+            
+            <tag> APT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Zarok 勒索軟體剖析：Chaos 家族變種與大型檔案破壞特性</title>
+      <link href="/2025/12/08/Zarok-%E5%8B%92%E7%B4%A2%E8%BB%9F%E9%AB%94%E5%89%96%E6%9E%90%EF%BC%9AChaos-%E5%AE%B6%E6%97%8F%E8%AE%8A%E7%A8%AE%E8%88%87%E5%A4%A7%E5%9E%8B%E6%AA%94%E6%A1%88%E7%A0%B4%E5%A3%9E%E7%89%B9%E6%80%A7/"/>
+      <url>/2025/12/08/Zarok-%E5%8B%92%E7%B4%A2%E8%BB%9F%E9%AB%94%E5%89%96%E6%9E%90%EF%BC%9AChaos-%E5%AE%B6%E6%97%8F%E8%AE%8A%E7%A8%AE%E8%88%87%E5%A4%A7%E5%9E%8B%E6%AA%94%E6%A1%88%E7%A0%B4%E5%A3%9E%E7%89%B9%E6%80%A7/</url>
+      
+        <content type="html"><![CDATA[<p>近期我們在自動化分析平台上觀察到一個標記為「Zarok」的新勒索軟體家族。該樣本屬於建立在 Chaos builder 與 BlackSnake Ransomware 之上的變種，為典型的低門檻勒索工具再包裝案例。該病毒除傳統的加密勒索功能外，還具有大型檔案破壞、還原能力破壞與針對加密貨幣位置的剪貼簿劫持功能，造成進一步資產損失。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結: <a href="https://medium.com/ois/zarok-%E5%8B%92%E7%B4%A2%E8%BB%9F%E9%AB%94%E5%89%96%E6%9E%90-chaos-%E5%AE%B6%E6%97%8F%E8%AE%8A%E7%A8%AE%E8%88%87%E5%A4%A7%E5%9E%8B%E6%AA%94%E6%A1%88%E7%A0%B4%E5%A3%9E%E7%89%B9%E6%80%A7-e303dcbc2e97?utm_source=dinlon5566.com">Medium</a></p><hr><p>這一篇研究其實算是一個新的嘗試，透過分析那些尚未受到標記或是全新的家族，以探索最新的攻擊手法或是各種罕見的行為特徵。總之，希望您看的開心 OwO&#x2F;</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Medium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 惡意程式分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>IDA MCP安裝與使用教學</title>
       <link href="/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/"/>
       <url>/2025/09/15/IDA-MCP%E5%AE%89%E8%A3%9D%E8%88%87%E4%BD%BF%E7%94%A8%E6%95%99%E5%AD%B8/</url>
