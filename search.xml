@@ -4,11 +4,40 @@
   
     
     <entry>
+      <title>深入銀狐 Part 1：載荷落地，Inno Setup 與 Pascal 的隱形載入鏈</title>
+      <link href="/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/"/>
+      <url>/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/</url>
+      
+        <content type="html"><![CDATA[<p>本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。</p><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-1-%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0-inno-setup-%E8%88%87-pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88-0d68fa59f8a6?utm_source=dinlon5566.com">Medium</a></p><hr><p>這邊其實在樣本出來之後不久就分析完了，作為之後研討會的材料一直放著。不過看到其他資安產商已經公開這個家族框架的分析，所以就決定把這個分析寫成一篇較為教學性質的文章來分享，順便把一些細節補充完整。</p><p>總之，希望您看的開心 OwO&#x2F;</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Medium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SilverFox </tag>
+            
+            <tag> APT </tag>
+            
+            <tag> 惡意程式分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Silver Fox APT：遞送鏈的集中化特徵</title>
       <link href="/2026/01/14/Silver-Fox-APT%EF%BC%9A%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E9%9B%86%E4%B8%AD%E5%8C%96%E7%89%B9%E5%BE%B5/"/>
       <url>/2026/01/14/Silver-Fox-APT%EF%BC%9A%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E9%9B%86%E4%B8%AD%E5%8C%96%E7%89%B9%E5%BE%B5/</url>
       
-        <content type="html"><![CDATA[<p>在針對 Silver Fox APT 相關資產進行情資收集時，我們觀測到一系列具有一致行為模式的前端下載誘導框架。此類站點多以熱門關鍵字進行 SEO 佔位，吸引使用者透過搜尋引擎進入偽裝下載頁。當使用者點擊下載後，站點會載入外部 JavaScript 資源並觸發導流流程，過程中向指定 API 站點請求動態短連結並投放最終載荷。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結: <a href="https://medium.com/ois/silver-fox-apt-%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E4%B8%AD%E6%A8%9E%E5%8C%96%E7%89%B9%E5%BE%B5%E7%A0%94%E7%A9%B6-8a713ad90fd6?utm_source=dinlon5566.com">Medium</a></p><hr><p>其實在寫這一篇文章時挺開心的，因為這陣子做 Silver Fox 的情資與惡意程式分析時，常常拆到一半發現這個樣本的家族已經被其他資安團隊寫過了，甚至有時候才差了幾天 QAQ</p><p>所以發現這次的研究重點與相關情資還沒有在其他地方出現，就趕快把這一篇文章寫出來，希望您看的開心 OwO&#x2F;</p><hr><h1 id="IOCs"><a href="#IOCs" class="headerlink" title="IOCs"></a>IOCs</h1><pre class="language-none"><code class="language-none">| IOC                                      | TYPE   | NOTE         || ---------------------------------------- | ------ | ------------ || 154d5a259cfe9b0908d0cff3cd02b102ee3a14d8 | SHA256 | 檔案 nice.js || telegram[.]organic                       | Domain | 資產         || js.telegram[.]organic                    | Domain | 資產         || 6x[.]org                                 | Domain | 資產         || api.6x[.]org                             | Domain | 資產         || hkdownload[.]com                         | Domain | 關聯資產     || xiazai.heimao[.]io                       | Domain | 關聯資產     || linebbn[.]com                            | Domain | TOP5釣魚頁面 || hk-line[.]com                            | Domain | TOP5釣魚頁面 || linebzn[.]com                            | Domain | TOP5釣魚頁面 || linebcn[.]com                            | Domain | TOP5釣魚頁面 || wps1[.]com                               | Domain | TOP5釣魚頁面 |</code></pre>]]></content>
+        <content type="html"><![CDATA[<p>在針對 Silver Fox APT 相關資產進行情資收集時，我們觀測到一系列具有一致行為模式的前端下載誘導框架。此類站點多以熱門關鍵字進行 SEO 佔位，吸引使用者透過搜尋引擎進入偽裝下載頁。當使用者點擊下載後，站點會載入外部 JavaScript 資源並觸發導流流程，過程中向指定 API 站點請求動態短連結並投放最終載荷。</p><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結: <a href="https://medium.com/ois/silver-fox-apt-%E9%81%9E%E9%80%81%E9%8F%88%E7%9A%84%E4%B8%AD%E6%A8%9E%E5%8C%96%E7%89%B9%E5%BE%B5%E7%A0%94%E7%A9%B6-8a713ad90fd6?utm_source=dinlon5566.com">Medium</a></p><hr><p>其實在寫這一篇文章時挺開心的，因為這陣子做 Silver Fox 的情資與惡意程式分析時，常常拆到一半發現這個樣本的家族已經被其他資安團隊寫過了，甚至有時候才差了幾天 QAQ</p><p>所以發現這次的研究重點與相關情資還沒有在其他地方出現，就趕快把這一篇文章寫出來，希望您看的開心 OwO&#x2F;</p><hr><h1 id="IOCs"><a href="#IOCs" class="headerlink" title="IOCs"></a>IOCs</h1><pre class="language-none"><code class="language-none">| IOC                                      | TYPE   | NOTE         || ---------------------------------------- | ------ | ------------ || 154d5a259cfe9b0908d0cff3cd02b102ee3a14d8 | SHA256 | 檔案 nice.js || telegram[.]organic                       | Domain | 資產         || js.telegram[.]organic                    | Domain | 資產         || 6x[.]org                                 | Domain | 資產         || api.6x[.]org                             | Domain | 資產         || hkdownload[.]com                         | Domain | 關聯資產     || xiazai.heimao[.]io                       | Domain | 關聯資產     || linebbn[.]com                            | Domain | TOP5釣魚頁面 || hk-line[.]com                            | Domain | TOP5釣魚頁面 || linebzn[.]com                            | Domain | TOP5釣魚頁面 || linebcn[.]com                            | Domain | TOP5釣魚頁面 || wps1[.]com                               | Domain | TOP5釣魚頁面 |</code></pre>]]></content>
       
       
       <categories>
