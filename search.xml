@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>深入銀狐 Part 2：失效工程 — EDR 消失術</title>
+      <link href="/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/"/>
+      <url>/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/</url>
+      
+        <content type="html"><![CDATA[<p>此篇文章聚焦在 men.exe 如何繞過 EDR 機制，利用內嵌壓縮檔的解密解壓、BYOVD 以及惡意驅動永久移除端點防護，並使用 DACL 提高持久性與蒐證難度。攻擊者透過分段投放與延後解密，把最敏感的載入器與驅動留到端點防護失效後才釋出，同時串接提權與 AVK，確保下一階段的核心主程式能在幾乎沒有監控阻力的狀態下落地與執行。</p><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-2-%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-edr-%E6%B6%88%E5%A4%B1%E8%A1%93-781b744f53d2?utm_source=dinlon5566.com">Medium</a></p><hr><p>這一篇文章的內容其實是我在分析過程中認為最好玩的部分。在過去的惡意程式分析中，大多只會在一個階段中進行防毒規避，而這個樣本將防毒規避與持久化、Rootkit 等技術結合在一起，形成完整的攻擊流程。</p><p>在分析完後，開始有興趣去研究驅動程式的利用手法，發現這個 <a href="https://github.com/zeze-zeze/ioctlance">ioctlance</a> 專案挺有趣的，希望未來能發現一些驅動漏洞 XD</p><p>花蓮貓貓<br><img src="/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/195143.jpg"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Medium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 惡意程式分析 </tag>
+            
+            <tag> SilverFox </tag>
+            
+            <tag> APT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>深入銀狐 Part 1：載荷落地，Inno Setup 與 Pascal 的隱形載入鏈</title>
       <link href="/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/"/>
       <url>/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/</url>
@@ -20,11 +49,11 @@
       
         <tags>
             
+            <tag> 惡意程式分析 </tag>
+            
             <tag> SilverFox </tag>
             
             <tag> APT </tag>
-            
-            <tag> 惡意程式分析 </tag>
             
         </tags>
       
