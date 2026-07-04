@@ -8,7 +8,7 @@
   <meta name="keywords" content="blog, hexo, dinlon5566, dinlon, dinlon5566.com, dinlon5566.github.io">
   <meta name="theme-color" content="#10b981">
 
-  <link rel="canonical" href="https://blog.dinlon5566.com/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/">
+  <link rel="canonical" href="https://blog.dinlon5566.com/2026/02/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/">
 
   
     <link rel="shortcut icon" href="/assets/favicon.ico">
@@ -17,12 +17,12 @@
   <meta name="description" content="本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入銀狐 Part 1：載荷落地，Inno Setup 與 Pascal 的隱形載入鏈">
-<meta property="og:url" content="https://blog.dinlon5566.com/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/index.html">
+<meta property="og:url" content="https://blog.dinlon5566.com/2026/02/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/index.html">
 <meta property="og:site_name" content="Dinlon&#39;s Blog">
 <meta property="og:description" content="本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2026-02-11T18:23:12.000Z">
-<meta property="article:modified_time" content="2026-02-11T18:36:29.080Z">
+<meta property="article:modified_time" content="2026-07-04T09:02:46.000Z">
 <meta property="article:author" content="Dinlon5566">
 <meta property="article:tag" content="惡意程式分析">
 <meta property="article:tag" content="SilverFox">
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary">
   <meta name="generator" content="Hexo 7.3.0">
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.dinlon5566.com/2026/02/12/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/"},"headline":"深入銀狐 Part 1：載荷落地，Inno Setup 與 Pascal 的隱形載入鏈","description":"本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。","datePublished":"2026-02-11T18:23:12.000Z","dateModified":"2026-02-11T18:36:29.080Z","author":{"@type":"Person","name":"Dinlon5566"},"publisher":{"@type":"Organization","name":"Dinlon's Blog","logo":{"@type":"ImageObject","url":"https://blog.dinlon5566.com/assets/favicon.ico"}}}
+{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.dinlon5566.com/2026/02/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/"},"headline":"深入銀狐 Part 1：載荷落地，Inno Setup 與 Pascal 的隱形載入鏈","description":"本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。","datePublished":"2026-02-11T18:23:12.000Z","dateModified":"2026-07-04T09:02:46.000Z","author":{"@type":"Person","name":"Dinlon5566"},"publisher":{"@type":"Organization","name":"Dinlon's Blog","logo":{"@type":"ImageObject","url":"https://blog.dinlon5566.com/assets/favicon.ico"}}}
 </script>
 
   

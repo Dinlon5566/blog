@@ -8,7 +8,7 @@
   <meta name="keywords" content="blog, hexo, dinlon5566, dinlon, dinlon5566.com, dinlon5566.github.io">
   <meta name="theme-color" content="#10b981">
 
-  <link rel="canonical" href="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/">
+  <link rel="canonical" href="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/">
 
   
     <link rel="shortcut icon" href="/assets/favicon.ico">
@@ -17,30 +17,30 @@
   <meta name="description" content="這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情">
 <meta property="og:type" content="article">
 <meta property="og:title" content="那些常見與不常見的DLL注入技術">
-<meta property="og:url" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/index.html">
+<meta property="og:url" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/index.html">
 <meta property="og:site_name" content="Dinlon&#39;s Blog">
 <meta property="og:description" content="這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250610132425.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609163305.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609174423.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609175432.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611185232.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250615024505.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611195208.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611200142.png">
-<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250612011511.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250610132425.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609163305.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609174423.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609175432.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611185232.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250615024505.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611195208.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611200142.png">
+<meta property="og:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250612011511.png">
 <meta property="article:published_time" content="2025-06-14T20:03:00.000Z">
-<meta property="article:modified_time" content="2025-06-14T21:45:28.245Z">
+<meta property="article:modified_time" content="2026-07-04T09:02:46.000Z">
 <meta property="article:author" content="Dinlon5566">
 <meta property="article:tag" content="惡意程式開發">
 <meta property="article:tag" content="簡易">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png">
+<meta name="twitter:image" content="https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png">
   <meta name="generator" content="Hexo 7.3.0">
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.dinlon5566.com/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/"},"headline":"那些常見與不常見的DLL注入技術","description":"這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情","datePublished":"2025-06-14T20:03:00.000Z","dateModified":"2025-06-14T21:45:28.245Z","author":{"@type":"Person","name":"Dinlon5566"},"publisher":{"@type":"Organization","name":"Dinlon's Blog","logo":{"@type":"ImageObject","url":"https://blog.dinlon5566.com/assets/favicon.ico"}}}
+{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.dinlon5566.com/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/"},"headline":"那些常見與不常見的DLL注入技術","description":"這一篇文章將會導覽各種 DLL 注入技術與 LoadLibrary 注入實作方法，還有進行開發時要注意的一些事情","datePublished":"2025-06-14T20:03:00.000Z","dateModified":"2026-07-04T09:02:46.000Z","author":{"@type":"Person","name":"Dinlon5566"},"publisher":{"@type":"Organization","name":"Dinlon's Blog","logo":{"@type":"ImageObject","url":"https://blog.dinlon5566.com/assets/favicon.ico"}}}
 </script>
 
   
@@ -132,16 +132,16 @@
     
     <div class="sea-article-content">
       <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我把論文寫完了 \OwO&#x2F;</p>
-<p>雖然我寫惡意程式的經驗也算不少，但每次要實作 DLL 注入時，總是習慣以 <code>CreateRemoteThread + LoadLibrary</code> 這種經典手法。所以我開始研究還有哪些 DLL 注入技術可以玩，卻發現網路上相關文章大多被付費牆或內容農場所污染 <del>甚至是我自己的文章XD</del>。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png"></p>
+<p>雖然我寫惡意程式的經驗也算不少，但每次要實作 DLL 注入時，總是習慣以 <code>CreateRemoteThread + LoadLibrary</code> 這種經典手法。所以我開始研究還有哪些 DLL 注入技術可以玩，卻發現網路上相關文章大多被付費牆或內容農場所污染 <del>甚至是我自己的文章XD</del>。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/image1.png"></p>
 <p>既然這樣，就來把我蒐集到的DLL注入技術彙整於此，之後要用時就可以直接找這邊。這一篇文章將會導覽<strong>各種 DLL 注入技術與 <code>LoadLibrary</code> 注入實作方法，還有進行開發時要注意的一些事情</strong>。之後將會建立一個系列，對這篇提到的注入技術進行實作演示。</p>
 <p>由於這篇文章可能會被我拿來當之後教案的材料 (沒錯又是鐵人賽)，所以會提供比較多的基礎知識。若你是有經驗或只是想查某些注入技術，可以直接來 <a href="#DLL-%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93%E6%91%98%E8%A6%81">DLL-注入技術摘要</a> 。</p>
 <h1 id="DLL-注入技術簡介"><a href="#DLL-注入技術簡介" class="headerlink" title="DLL 注入技術簡介"></a>DLL 注入技術簡介</h1><h2 id="甚麼是-DLL-注入"><a href="#甚麼是-DLL-注入" class="headerlink" title="甚麼是 DLL 注入"></a>甚麼是 DLL 注入</h2><p><a target="_blank" rel="noopener" href="https://attack.mitre.org/techniques/T1055/001/">https://attack.mitre.org/techniques/T1055/001/</a></p>
-<p>簡單來說，DLL 注入是一種讓你將自訂程式碼「塞進」正在執行的目標行程 (Process) 中的技術。使目標能以其權限執行你想要達成的目標，如存取私有記憶體、攔截或替換 API、乃至於繞過安全機制等等。而做法通常是在目標行程的<strong>記憶體空間中載入一個 DLL 檔案或路徑</strong>，隨後透過各種方式 <strong>呼叫 DLL 中的程式碼地址</strong>，藉此在該行程執行你自己的程式碼。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250610132425.png"></p>
+<p>簡單來說，DLL 注入是一種讓你將自訂程式碼「塞進」正在執行的目標行程 (Process) 中的技術。使目標能以其權限執行你想要達成的目標，如存取私有記憶體、攔截或替換 API、乃至於繞過安全機制等等。而做法通常是在目標行程的<strong>記憶體空間中載入一個 DLL 檔案或路徑</strong>，隨後透過各種方式 <strong>呼叫 DLL 中的程式碼地址</strong>，藉此在該行程執行你自己的程式碼。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250610132425.png"></p>
 <blockquote>
 <p>等等，甚麼是 DLL?<br>							— 四年前的作者 </p>
 </blockquote>
 <p>由於很多人都沒有 DLL 開發的經驗與需求，即使是大部分資工系也不曾教過，導致讀到相關技術時時常一頭霧水。<br><strong>所以這邊以直白的方式講 DLL 到底是甚麼東西，與他要如何開發與運行?</strong> 如果你已經會了，<a href="#DLL-%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93%E6%91%98%E8%A6%81">點我傳送</a>。</p>
-<h2 id="DLL-開發"><a href="#DLL-開發" class="headerlink" title="DLL 開發"></a>DLL 開發</h2><p>與其一直講理論的東西，我更喜歡在實作中講述他的功能。我們開啟 Visual Studio 2022 &gt; 建立新的專案 &gt; 選用 cpp 的<strong>動態連結程式庫</strong>(注意語言與名稱不要選錯)，並建立 “HelloDLL” 專案。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609163305.png"></p>
+<h2 id="DLL-開發"><a href="#DLL-開發" class="headerlink" title="DLL 開發"></a>DLL 開發</h2><p>與其一直講理論的東西，我更喜歡在實作中講述他的功能。我們開啟 Visual Studio 2022 &gt; 建立新的專案 &gt; 選用 cpp 的<strong>動態連結程式庫</strong>(注意語言與名稱不要選錯)，並建立 “HelloDLL” 專案。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609163305.png"></p>
 <p>建立完成後，你會看到預設程式碼，寫著 <code>DllMain()</code> :</p>
 <pre class="language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// dllmain.cpp : 定義 DLL 應用程式的進入點。</span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"pch.h"</span></span>
@@ -208,9 +208,9 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
     <span class="token punctuation">&#125;</span>
     <span class="token keyword">return</span> TRUE<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
-<p>如果你會在虛擬機測試的話，記得先去<strong>屬性&gt;C&#x2F;cpp&gt;程式碼產生</strong> 將執行階段程式庫改成 “多執行續 (&#x2F;MT)” 的<strong>靜態連結</strong>方式，避免執行時出現找不到dll的訊息。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609174423.png"></p>
+<p>如果你會在虛擬機測試的話，記得先去<strong>屬性&gt;C&#x2F;cpp&gt;程式碼產生</strong> 將執行階段程式庫改成 “多執行續 (&#x2F;MT)” 的<strong>靜態連結</strong>方式，避免執行時出現找不到dll的訊息。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609174423.png"></p>
 <p>然後進行建置方案，就可以看到你的第一個DLL了 !</p>
-<p>我們可以透過 <a target="_blank" rel="noopener" href="https://github.com/hasherezade/pe-bear">PEBear</a> 來觀察這一個 dll 檔案，就能發現剛剛寫入的 SayHello 已經在導出函數表了。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609175432.png"></p>
+<p>我們可以透過 <a target="_blank" rel="noopener" href="https://github.com/hasherezade/pe-bear">PEBear</a> 來觀察這一個 dll 檔案，就能發現剛剛寫入的 SayHello 已經在導出函數表了。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250609175432.png"></p>
 <p>有了食譜，現在需要一位廚師 : rundll32.exe 。他是Windows 系統中的一個核心工具，使用戶在不直接啟動 DLL 的情況下，執行 DLL 內部的特定功能。Rundll32有兩個版本，分別對應至64位元與32位元 :</p>
 <ul>
 <li><code>C:\Windows\System32\rundll32.exe</code> : 64位元</li>
@@ -221,7 +221,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 
 <p>若要將我們的 dll 執行，僅用以下命令 :</p>
 <pre class="language-powershell" data-language="powershell"><code class="language-powershell">C:\Windows\System32\rundll32<span class="token punctuation">.</span>exe dllHelloWorld<span class="token punctuation">.</span>dll<span class="token punctuation">,</span>SayHello</code></pre>
-<p><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611185232.png"><br>輸入後可以看到一些視窗，我們觀察它的規律 :</p>
+<p><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611185232.png"><br>輸入後可以看到一些視窗，我們觀察它的規律 :</p>
 <ol>
 <li>首先可以看到 <code>DLL_PROCESS_ATTACH</code> 被觸發</li>
 <li>接下來數個 <code>DLL_THREAD_ATTACH</code> 出現</li>
@@ -334,7 +334,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 <li>透過 <code>WriteProcessMemory</code> 將完整的DLL檔原始數據寫入這塊記憶體中</li>
 <li>由注入程序在目標行程內設計<strong>自行執行映射流程</strong>(計算新的基址偏移、重定位表修正至 DLL 的絕對地址、規劃 IAT 函數位置等等……)</li>
 </ol>
-<p>有點類似於之前在鐵人賽寫的內嵌補丁<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10301353">這一篇</a>。(示意圖)<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250615024505.png"></p>
+<p>有點類似於之前在鐵人賽寫的內嵌補丁<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10301353">這一篇</a>。(示意圖)<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250615024505.png"></p>
 <p>這種方法本質上屬於將可執行PE檔案直接寫入目標進程並啟動執行，又稱 <strong>PE 注入 (PE Injection)</strong>。與經典方法相比，手動映射<strong>不需要將惡意DLL存放到磁碟</strong>，因此隱蔽性更高，但也非常麻煩。</p>
 <h1 id="注入技術實作"><a href="#注入技術實作" class="headerlink" title="注入技術實作"></a>注入技術實作</h1><p>在理解這些注入技術的特性之後，我們來嘗試實作看看這些方法。在開始之前，先提供一些有用的函數使我們開發方便一點。</p>
 <p>isUserAdmin : 這個函數來自於<a target="_blank" rel="noopener" href="https://github.com/cocomelonc/mdmz_book">MDMZ_Book</a>，用於測試是否具有系統管理員權限。</p>
@@ -542,7 +542,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 	<span class="token keyword">return</span> TRUE<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 
-<p>編譯完成之後，將 dll 放入虛擬機中。然後找一個用來注入的目標，這邊選擇了 <code>notepad++.exe</code> 來作為對象，使用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a> 的<code>process explorer</code>  來檢視該行程的 PID 與目前引入的 DLL 清單 :<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611195208.png"></p>
+<p>編譯完成之後，將 dll 放入虛擬機中。然後找一個用來注入的目標，這邊選擇了 <code>notepad++.exe</code> 來作為對象，使用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a> 的<code>process explorer</code>  來檢視該行程的 PID 與目前引入的 DLL 清單 :<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611195208.png"></p>
 <p>看見目標PID是1452，執行命令 :</p>
 <pre class="language-cmd" data-language="cmd"><code class="language-cmd">rundll32 LoadLibraryInject.dll, StartInjection 1452</code></pre>
 
@@ -551,7 +551,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 </blockquote>
 
 <p>成功注入後，使用 <code>process explorer</code> 中可以看到現在 <code>notepad++.exe</code> 已經引入 <code>LoadLibraryInject.dll</code>。</p>
-<p><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611200142.png"></p>
+<p><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250611200142.png"></p>
 <h2 id="DLL注入注意事項"><a href="#DLL注入注意事項" class="headerlink" title="DLL注入注意事項"></a>DLL注入注意事項</h2><p>如果剛剛在注入後對 Notepad++ 進行操作，就會發現程式<strong>無回應</strong>並且重新啟動了。因此在進行DLL注入時，需要特別注意架構兼容性、DllMain函數限制、行程權限管理、記憶體分配策略以及安全檢測規避等多個問題，以確保注入過程的穩定性和成功率。並且這些問題<strong>不僅限於 LoadLibrary 注入手法</strong>，以下會說明常見的一些情況。</p>
 <h3 id="DllMain函數的限制"><a href="#DllMain函數的限制" class="headerlink" title="DllMain函數的限制"></a>DllMain函數的限制</h3><p>由於DLL被加載到進程後會自動運行 <code>DllMain()</code> 函數，因此我們會想把很多想執行的代碼放到 <code>DllMain()</code> 函數中。然而，Windows 透過一把 Loader Lock 來保護模組載入&#x2F;解除載入期間的內部結構（PE 映像、導入表、TLS 等等）。任何在 Loader Lock 持有期間又嘗試載入其他 DLL、開新執行緒、等候物件、做 COM 初始化……都可能導致死結發生而崩潰。就像剛剛 Notepad++ 崩潰就是因為使用了 MessageBox 導致死鎖。</p>
 <p>常見的情況像是這樣 :</p>
@@ -590,7 +590,7 @@ BOOL APIENTRY <span class="token function">DllMain</span><span class="token punc
 	<span class="token keyword">return</span> TRUE<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span></code></pre>
 
-<p>這時候再次對 <code>notepad++.exe</code> 進行注入，就可以使訊息窗與者程式同時順暢運行。<br><img src="/2025/06/15/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250612011511.png"></p>
+<p>這時候再次對 <code>notepad++.exe</code> 進行注入，就可以使訊息窗與者程式同時順暢運行。<br><img src="/2025/06/14/%E9%82%A3%E4%BA%9B%E5%B8%B8%E8%A6%8B%E8%88%87%E4%B8%8D%E5%B8%B8%E8%A6%8B%E7%9A%84DLL%E6%B3%A8%E5%85%A5%E6%8A%80%E8%A1%93/20250612011511.png"></p>
 <h3 id="32與64位元兼容性問題"><a href="#32與64位元兼容性問題" class="headerlink" title="32與64位元兼容性問題"></a>32與64位元兼容性問題</h3><p>在進行DLL注入時，最關鍵的限制之一是架構兼容性問題。由於Windows系統的記憶體地址空間管理機制，不同架構的行程無法共享相同的記憶體空間結構。因此 <strong>32位不能注入64位</strong>、<strong>64位也不能注入32位</strong>，需確保注入器與目標行程的架構完全一致。</p>
 <p>相同的，若是利用到註冊表來進行注入的方式，也需要注意到兼容性問題。比如 <code>App_Init_DLLs</code> 有兩個不同的註冊表路徑 :</p>
 <ul>
