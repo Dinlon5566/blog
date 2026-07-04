@@ -4,11 +4,40 @@
   
     
     <entry>
+      <title>深入銀狐 Part 3：從 DLL 側載到 ValleyRAT，完整拆解記憶體載入與反鑑識鏈手法</title>
+      <link href="/2026/05/14/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-3%EF%BC%9A%E5%BE%9E-DLL-%E5%81%B4%E8%BC%89%E5%88%B0-ValleyRAT%EF%BC%8C%E5%AE%8C%E6%95%B4%E6%8B%86%E8%A7%A3%E8%A8%98%E6%86%B6%E9%AB%94%E8%BC%89%E5%85%A5%E8%88%87%E5%8F%8D%E9%91%91%E8%AD%98%E9%8F%88%E6%89%8B%E6%B3%95/"/>
+      <url>/2026/05/14/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-3%EF%BC%9A%E5%BE%9E-DLL-%E5%81%B4%E8%BC%89%E5%88%B0-ValleyRAT%EF%BC%8C%E5%AE%8C%E6%95%B4%E6%8B%86%E8%A7%A3%E8%A8%98%E6%86%B6%E9%AB%94%E8%BC%89%E5%85%A5%E8%88%87%E5%8F%8D%E9%91%91%E8%AD%98%E9%8F%88%E6%89%8B%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<p>本篇聚焦在銀狐完成環境鋪設後，真正的 ValleyRAT 如何被載入、上線並長期存活。透過 DLL 側載，由這支載入器同時拉起三條執行緒：包含 payload 解密與執行、rootkit註冊、Defender 排除路徑等手法，使得單純刪除落地檔案或封鎖 C2 都不足以讓端點恢復乾淨。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-3-%E5%BE%9E-dll-%E5%81%B4%E8%BC%89%E5%88%B0-valleyrat-%E5%AE%8C%E6%95%B4%E6%8B%86%E8%A7%A3%E8%A8%98%E6%86%B6%E9%AB%94%E8%BC%89%E5%85%A5%E8%88%87%E5%8F%8D%E9%91%91%E8%AD%98%E9%8F%88%E6%89%8B%E6%B3%95-29115e3a5a52?utm_source=dinlon5566.com">Medium</a></p><hr><p>其實這一個樣本的分析過程還藏了不少有趣的手法，不過篇幅原因就沒有再加進去了。</p><p>總之，希望您看的開心 OwO&#x2F;</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Medium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 惡意程式分析 </tag>
+            
+            <tag> SilverFox </tag>
+            
+            <tag> APT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>深入銀狐 Part 2：失效工程 — EDR 消失術</title>
       <link href="/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/"/>
       <url>/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/</url>
       
-        <content type="html"><![CDATA[<p>此篇文章聚焦在 men.exe 如何繞過 EDR 機制，利用內嵌壓縮檔的解密解壓、BYOVD 以及惡意驅動永久移除端點防護，並使用 DACL 提高持久性與蒐證難度。攻擊者透過分段投放與延後解密，把最敏感的載入器與驅動留到端點防護失效後才釋出，同時串接提權與 AVK，確保下一階段的核心主程式能在幾乎沒有監控阻力的狀態下落地與執行。</p><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-2-%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-edr-%E6%B6%88%E5%A4%B1%E8%A1%93-781b744f53d2?utm_source=dinlon5566.com">Medium</a></p><hr><p>這一篇文章的內容其實是我在分析過程中認為最好玩的部分。在過去的惡意程式分析中，大多只會在一個階段中進行防毒規避，而這個樣本將防毒規避與持久化、Rootkit 等技術結合在一起，形成完整的攻擊流程。</p><p>在分析完後，開始有興趣去研究驅動程式的利用手法，發現這個 <a href="https://github.com/zeze-zeze/ioctlance">ioctlance</a> 專案挺有趣的，希望未來能發現一些驅動漏洞 XD</p><p>花蓮貓貓<br><img src="/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/195143.jpg"></p>]]></content>
+        <content type="html"><![CDATA[<p>此篇文章聚焦在 men.exe 如何繞過 EDR 機制，利用內嵌壓縮檔的解密解壓、BYOVD 以及惡意驅動永久移除端點防護，並使用 DACL 提高持久性與蒐證難度。攻擊者透過分段投放與延後解密，把最敏感的載入器與驅動留到端點防護失效後才釋出，同時串接提權與 AVK，確保下一階段的核心主程式能在幾乎沒有監控阻力的狀態下落地與執行。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-2-%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-edr-%E6%B6%88%E5%A4%B1%E8%A1%93-781b744f53d2?utm_source=dinlon5566.com">Medium</a></p><hr><p>這一篇文章的內容其實是我在分析過程中認為最好玩的部分。在過去的惡意程式分析中，大多只會在一個階段中進行防毒規避，而這個樣本將防毒規避與持久化、Rootkit 等技術結合在一起，形成完整的攻擊流程。</p><p>在分析完後，開始有興趣去研究驅動程式的利用手法，發現這個 <a href="https://github.com/zeze-zeze/ioctlance">ioctlance</a> 專案挺有趣的，希望未來能發現一些驅動漏洞 XD</p><p>花蓮貓貓<br><img src="/2026/03/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-2%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B7%A5%E7%A8%8B-%E2%80%94-EDR-%E6%B6%88%E5%A4%B1%E8%A1%93/195143.jpg"></p>]]></content>
       
       
       <categories>
@@ -37,7 +66,7 @@
       <link href="/2026/02/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/"/>
       <url>/2026/02/11/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-Part-1%EF%BC%9A%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0%EF%BC%8CInno-Setup-%E8%88%87-Pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88/</url>
       
-        <content type="html"><![CDATA[<p>本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。</p><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-1-%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0-inno-setup-%E8%88%87-pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88-0d68fa59f8a6?utm_source=dinlon5566.com">Medium</a></p><hr><p>這邊其實在樣本出來之後不久就分析完了，作為之後研討會的材料一直放著。不過看到其他資安產商已經公開這個家族框架的分析，所以就決定把這個分析寫成一篇較為教學性質的文章來分享，順便把一些細節補充完整。</p><p>總之，希望您看的開心 OwO&#x2F;</p>]]></content>
+        <content type="html"><![CDATA[<p>本章將聚焦在受害者自 Silver Fox APT 釣魚站點下載並執行安裝檔後，惡意程式如何在端點完成第一階段的解包落地、環境偵測與防護繞過，並把下一階段的載入器悄悄部署到固定位置，讓看似正常的安裝流程，轉變為可持續擴張的多階段攻擊起點。</p><span id="more"></span><p>本篇文章已投稿至 Medium，請由以下連結觀看全文</p><p>全文連結:<a href="https://medium.com/ois/%E6%B7%B1%E5%85%A5%E9%8A%80%E7%8B%90-part-1-%E8%BC%89%E8%8D%B7%E8%90%BD%E5%9C%B0-inno-setup-%E8%88%87-pascal-%E7%9A%84%E9%9A%B1%E5%BD%A2%E8%BC%89%E5%85%A5%E9%8F%88-0d68fa59f8a6?utm_source=dinlon5566.com">Medium</a></p><hr><p>這邊其實在樣本出來之後不久就分析完了，作為之後研討會的材料一直放著。不過看到其他資安產商已經公開這個家族框架的分析，所以就決定把這個分析寫成一篇較為教學性質的文章來分享，順便把一些細節補充完整。</p><p>總之，希望您看的開心 OwO&#x2F;</p>]]></content>
       
       
       <categories>
