@@ -1,0 +1,45 @@
+name: Deploy Hexo site
+
+on:
+  push:
+    branches: [source]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 完整歷史,供還原檔案 mtime 用
+
+      # _config.yml 的 updated_option 是 mtime,
+      # CI checkout 會重設所有檔案時間,需還原成 git 紀錄的時間
+      - name: Restore file modification times
+        uses: chetan/git-restore-mtime-action@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npx hexo generate
+
+      - name: Deploy to master branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: master
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Site updated via GitHub Actions'

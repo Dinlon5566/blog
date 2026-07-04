@@ -1,0 +1,25 @@
+favicon: /assets/favicon.ico
+menu:
+  - name: 文章
+    url: /articles/
+articles:
+  path: 'articles' 
+  per_page: 10 
+  order_by: -date 
+home:
+  hero:
+    name: Dinlon5566
+    intro: "喜歡研究各種玩意，任何事情都想要會一些 OwO/"
+    avatar: assets\abgxi-747lz.png
+
+socialLink:
+  - name: Website
+    link: https://dinlon5566.com/
+  - name: Github
+    link: https://github.com/dinlon5566
+  - name: Medium
+    link: https://medium.com/@dinlon5566
+
+search:
+  enable: true
+  type: pagefind
