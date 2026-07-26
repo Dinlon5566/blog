@@ -13,6 +13,8 @@ timezone: 'Asia/Taipei'
 favicon: /assets/favicon.ico
 sitemap:
   path: sitemap.xml
+# Google Tag Manager container, injected by scripts/gtm.js. Empty = no tracking.
+gtm: GTM-WNK44GSR
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://blog.dinlon5566.com/
